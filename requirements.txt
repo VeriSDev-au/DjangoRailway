@@ -15,4 +15,5 @@ sqlparse==0.4.3
 tomli==2.0.1
 tzdata==2022.7
 wheel==0.38.4
+whitenoise==6.4.0
 wincertstore==0.2
