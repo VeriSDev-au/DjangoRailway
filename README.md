@@ -1,5 +1,5 @@
 # JangoRailway
-This project developed as a template sample on how we can deploy a basic django project into Railway.app platform.
+This project developed as a template sample on how we can deploy a basic django project into Railway.app platform. It doesn't containt any user interface since the deployment test will be indicated success when the default django page is appear and /admin pages are working (all the static files render properly).
 
 
 ## Prepare Procfile
@@ -32,15 +32,37 @@ ALLOWED_HOSTS = ["*"]
 ```
 
 ## Define STATIC_ROOT
+To allow static working within docker in Railway.App we need to install additional library:
+
+``` cmd
+pip install whitenoise
+```
+
 Within settings.py need to modify static and media file configuration to allow render.
 
 ``` py
+import os
+
+INSTALLED_APPS = [
+    ...
+    "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    ...
+]
+
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
